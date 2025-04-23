@@ -12,8 +12,8 @@ class UserModel extends Model
 
     public static function getAllUsers()
     {
-        return self::select('id', 'name', 'email', 'created_at')
-            ->where('status', 1) // Filtra apenas usuários ativos
+        return self::select('id', 'name', 'email', 'status', 'created_at')
+            //->where('status', 1) // Filtra apenas usuários ativos
             ->get();
     }
 
