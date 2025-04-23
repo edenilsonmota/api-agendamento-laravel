@@ -12,4 +12,9 @@ $router->get('/users', function (){
 });
 
 
+$router->post('/users', function (){
+    $controller = new UserController();
+    return $controller->create();
+});
+
 return $router;

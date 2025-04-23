@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Core;
+use App\Core\Response;
 
 #criando um roteador simples
 class Router
@@ -12,17 +13,37 @@ class Router
         $this->routes['GET'][$uri] = $callback;
     }
 
+    public function post (string $uri, callable $callback)
+    {
+        $this->routes['POST'][$uri] = $callback;
+    }
+
+    public function put (string $uri, callable $callback)
+    {
+        $this->routes['PUT'][$uri] = $callback;
+    }
+
+    public function delete (string $uri, callable $callback)
+    {
+        $this->routes['DELETE'][$uri] = $callback;
+    }
+
+
+    /**
+     * "Dispara a rota correspondente ao método e URI fornecidos."
+     * @param string $method
+     * @param string $uri
+     * @return void
+     */
     public function dispatch(string $method, string $uri)
     {
         $callback = $this->routes[$method][$uri] ?? null;
 
         if ($callback) {
-            $response = $callback();
-            header('Content-Type: application/json');
-            echo json_encode($response);
-        }else {
-            http_response_code(404);
-            echo json_encode(['error' => 'Not Found Router']);
+            $data = $callback(); 
+            Response::json($data);
+        } else {
+            Response::json(['error' => 'Not Found Router'], 404);
         }
     }
 }

@@ -11,5 +11,8 @@
             "email": "edenilsonmota.job@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "illuminate/database": "^12.10",
+        "vlucas/phpdotenv": "^5.6"
+    }
 }
