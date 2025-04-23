@@ -9,7 +9,13 @@ use App\Models\UserModel;
 //validação de dadosa antes de salvar no banco de dados
 class UserService
 {
-    public function create(array $data)
+    public static function index()
+    {
+        return UserModel::getAllUsers();
+    }
+
+
+    public static function create(array $data)
     {
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             throw new Exception(Response::json(['error' => 'Email inválido'], 400));

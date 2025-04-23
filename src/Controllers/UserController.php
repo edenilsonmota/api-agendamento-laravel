@@ -10,13 +10,7 @@ class UserController
 {
     public function index()
     {
-        
-        // return Response::json([
-        //     'users' => [
-        //         ['id' => 1, 'name' => 'John Doe'],
-        //         ['id' => 2, 'name' => 'Jane Doe'],
-        //     ]
-        // ]);
+         return Response::json(UserService::index(), 200); // Retorna todos os usuários em formato JSON
     }
 
     public function show($id)
@@ -35,16 +29,15 @@ class UserController
         $email = Request::input('email'); 
         $password = Request::input('password');
 
-    
-        // Criação do usuário
-        $userService = new UserService();
+
         try {
-            $user = $userService->create([
+            $user = UserService::create([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password
             ]);
-            return Response::json($user);// Retorna o usuário criado em formato JSON
+
+            return Response::json($user); // Retorna o usuário criado em formato JSON
 
         } catch (Exception $e) {
             return Response::json(['error' => "Erro ao criar usuário: " . $e->getMessage()]); // Retorna o erro em formato JSON
