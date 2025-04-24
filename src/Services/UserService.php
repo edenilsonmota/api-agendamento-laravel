@@ -14,6 +14,19 @@ class UserService
         return UserModel::getAllUsers();
     }
 
+    public static function show($id)
+    {
+        if(!isset($id)) {
+            throw new Exception(Response::json(['error' => 'ID não fornecido'], 400));
+        }
+
+        if(!is_numeric($id)) {
+            throw new Exception(Response::json(['error' => 'ID inválido'], 400));
+        }
+
+        return UserModel::getById($id);
+    }
+
 
     public static function create(array $data)
     {

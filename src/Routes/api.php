@@ -11,6 +11,10 @@ $router->get('/users', function (){
     return $controller->index();
 });
 
+$router->get('/users/{id}', function ($id){
+    $controller = new UserController();
+    return $controller->show($id);
+});
 
 $router->post('/users', function (){
     $controller = new UserController();

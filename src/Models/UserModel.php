@@ -17,6 +17,13 @@ class UserModel extends Model
             ->get();
     }
 
+    public static function getById(int $id)
+    {
+        return self::select('id', 'name', 'email', 'status', 'created_at')
+            ->where('id', $id)
+            ->first();
+    }
+
     public static function createUser(array $data)
     {
         $user = new self();

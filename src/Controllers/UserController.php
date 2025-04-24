@@ -10,12 +10,18 @@ class UserController
 {
     public function index()
     {
-         return Response::json(UserService::index(), 200); // Retorna todos os usuários em formato JSON
+         return Response::json(UserService::index()); // Retorna todos os usuários em formato JSON
     }
 
+    /**
+     * Retorna um usuário específico em formato JSON
+     * @param $id
+     * @return null
+     * @throws Exception
+     */
     public function show($id)
     {
-        // Code to show a single user
+        return Response::json(UserService::show($id));
     }
 
     /**
