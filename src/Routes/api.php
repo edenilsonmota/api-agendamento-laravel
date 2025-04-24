@@ -3,32 +3,24 @@
 use App\Controllers\UserController;
 use App\Core\Router;
 
-# definir rotas
+/**
+ * Rotas da API
+ */
 $router = new Router();
 
-$router->get('/users', function (){
-    $controller = new UserController();
-    return $controller->index();
+/**
+ * Grupo de rotas para usuários
+ */
+$router->group('/users', function ($router) {
+    $router->get('/', fn () => (new UserController())->index());
+    $router->get('/{id}', fn ($id) => (new UserController())->show($id));
+    $router->post('/', fn () => (new UserController())->create());
+    $router->patch('/{id}', fn ($id) => (new UserController())->update($id));
+    $router->delete('/{id}', fn ($id) => (new UserController())->delete($id));
 });
 
-$router->get('/users/{id}', function ($id){
-    $controller = new UserController();
-    return $controller->show($id);
-});
 
-$router->post('/users', function (){
-    $controller = new UserController();
-    return $controller->create();
-});
+// Mais grupos podem ser definidos para outras funcionalidades
 
-$router->patch('/users/{id}', function ($id){
-    $controller = new UserController();
-    return $controller->update($id);
-});
-
-$router->delete('/users/{id}', function ($id){
-    $controller = new UserController();
-    return $controller->delete($id);
-});
 
 return $router;
