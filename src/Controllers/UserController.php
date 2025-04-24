@@ -57,6 +57,6 @@ class UserController
 
     public function delete($id)
     {
-        // Code to delete a user
+        return Response::json(UserService::delete($id)); // Retorna a resposta da exclusão em formato JSON
     }
 }

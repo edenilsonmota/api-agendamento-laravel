@@ -44,4 +44,9 @@ class UserService
 
         return UserModel::createUser($data);
     }
+
+    public static function delete($id)
+    {
+        return UserModel::deleteUser($id);
+    }
 }

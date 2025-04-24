@@ -39,4 +39,17 @@ class UserModel extends Model
 
         return $user;
     }
+
+    public static function deleteUser(int $id)
+    {
+        $deleted = self::destroy($id);
+
+        if (!$deleted) {
+            throw new \Exception(Response::json(['Usuário não encontrado'], 404));
+
+        }
+
+        return ['message' => 'Usuário deletado com sucesso'];
+    }
+
 }

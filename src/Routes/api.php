@@ -21,4 +21,9 @@ $router->post('/users', function (){
     return $controller->create();
 });
 
+$router->delete('/users/{id}', function ($id){
+    $controller = new UserController();
+    return $controller->delete($id);
+});
+
 return $router;
