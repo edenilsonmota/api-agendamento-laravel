@@ -21,6 +21,11 @@ $router->post('/users', function (){
     return $controller->create();
 });
 
+$router->patch('/users/{id}', function ($id){
+    $controller = new UserController();
+    return $controller->update($id);
+});
+
 $router->delete('/users/{id}', function ($id){
     $controller = new UserController();
     return $controller->delete($id);

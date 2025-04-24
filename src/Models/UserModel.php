@@ -7,8 +7,9 @@ use App\Core\Response;
 class UserModel extends Model
 {
     protected $table = 'users'; // Nome da tabela
-    protected $fillable = ['name', 'email', 'password']; // Campos
+    protected $fillable = ['name', 'email', 'password', 'status']; // Campos
     public $timestamps = true; // Habilita os timestamps (created_at e updated_at)
+    protected $guarded = ['id', 'created_at']; //não permitir a atribuição dos campos id e created_at
 
     public static function getAllUsers()
     {
@@ -45,11 +46,33 @@ class UserModel extends Model
         $deleted = self::destroy($id);
 
         if (!$deleted) {
-            throw new \Exception(Response::json(['Usuário não encontrado'], 404));
+            throw new \Exception(Response::json(['Usuário não deletado'], 404));
 
         }
 
         return ['message' => 'Usuário deletado com sucesso'];
+    }
+
+    public static function updateUser(int $id, array $data)
+    {
+        $user = self::find($id);
+
+        if (!$user) {
+            throw new \Exception(Response::json(['error' => 'Usuário não encontrado'], 404));
+        }
+
+        // Atualiza os campos permitidos
+        foreach ($data as $key => $value) {
+            if (in_array($key, $user->getFillable())) {
+                $user->$key = $value;
+            }
+        }
+
+        if (!$user->save()) {
+            throw new \Exception(Response::json(['error' => 'Erro ao atualizar usuário'], 500));
+        }
+
+        return $user;
     }
 
 }

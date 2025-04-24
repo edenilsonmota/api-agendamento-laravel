@@ -23,6 +23,11 @@ class Router
         $this->routes['PUT'][$uri] = $callback;
     }
 
+    public function patch (string $uri, callable $callback)
+    {
+        $this->routes['PATCH'][$uri] = $callback;
+    }
+
     public function delete (string $uri, callable $callback)
     {
         $this->routes['DELETE'][$uri] = $callback;

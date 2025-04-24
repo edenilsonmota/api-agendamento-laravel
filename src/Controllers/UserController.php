@@ -50,11 +50,27 @@ class UserController
         }
     }
 
+    /** update (patch)
+     * @param $id
+     * @return null
+     */
     public function update($id)
     {
-        // Code to update an existing user
+        $data = Request::json(); // Pega todos os dados do corpo da requisição JSON
+
+        try {
+            $user = UserService::update($id, $data);
+            return Response::json($user);
+        } catch (Exception $e) {
+            return Response::json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+        }
     }
 
+    /** delete
+     * @param $id
+     * @return null
+     * @throws Exception
+     */
     public function delete($id)
     {
         return Response::json(UserService::delete($id)); // Retorna a resposta da exclusão em formato JSON

@@ -6,7 +6,10 @@ use Exception;
 use App\Core\Response;
 use App\Models\UserModel;
 
-//validação de dadosa antes de salvar no banco de dados
+/**
+ * "Classe de serviço para gerenciar usuários."
+ * @package App\Services
+ */
 class UserService
 {
     public static function index()
@@ -45,8 +48,46 @@ class UserService
         return UserModel::createUser($data);
     }
 
+    public static function update($id, array $data)
+    {
+        if (!isset($id)) {
+            throw new Exception(Response::json(['error' => 'ID não fornecido'], 400));
+        }
+
+        if(!is_numeric($id)) {
+            throw new Exception(Response::json(['error' => 'ID inválido'], 400));
+        }
+
+        //retornar os campos que podem ser atualizados
+        $fillable = (new UserModel())->getFillable();
+
+        foreach ($data as $column => $value) {
+            if (!in_array($column, $fillable)) {
+                throw new \Exception(Response::json("Coluna $column não permitida para atualização", 400));
+            }
+        }
+
+        return UserModel::updateUser($id, $data);
+
+
+    }
+
     public static function delete($id)
     {
+        if (!isset($id)) {
+            throw new Exception(Response::json(['error' => 'ID não fornecido'], 400));
+        }
+
+        if(!is_numeric($id)) {
+            throw new Exception(Response::json(['error' => 'ID inválido'], 400));
+        }
+
+        $user = UserModel::find($id);
+
+        if (!$user) {
+            throw new \Exception(Response::json(['error' => 'Usuário não encontrado'], 404));
+        }
+
         return UserModel::deleteUser($id);
     }
 }
