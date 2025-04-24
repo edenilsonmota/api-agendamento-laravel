@@ -35,15 +35,24 @@ class Router
      * @param string $uri
      * @return void
      */
-    public function dispatch(string $method, string $uri)
+    public function dispatch(string $method, string $uri): void
     {
-        $callback = $this->routes[$method][$uri] ?? null;
+        $routes = $this->routes[$method] ?? [];
 
-        if ($callback) {
-            $data = $callback(); 
-            Response::json($data);
-        } else {
-            Response::json(['error' => 'Not Found Router'], 404);
+        foreach ($routes as $route => $callback) {
+            // Transforma {param} em regex
+            $pattern = preg_replace('#\{[^}]+\}#', '([^/]+)', $route);
+            $pattern = "#^" . $pattern . "$#";
+
+            if (preg_match($pattern, $uri, $matches)) {
+                array_shift($matches); // Remove o match completo
+                $data = call_user_func_array($callback, $matches);
+                Response::json($data);
+                return;
+            }
         }
+
+        Response::json(['error' => 'Not Found Router'], 404);
     }
+
 }
